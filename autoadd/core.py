@@ -197,7 +197,7 @@ class Core(CorePluginBase):
                 if watchdir.get(option+'_toggle', True):
                     opts[option] = value
         for filename in os.listdir(watchdir["abspath"]):
-            if filename.split(".")[-1] == "torrent":
+            if filename.endswith(".torrent"):
                 try:
                     filepath = os.path.join(watchdir["abspath"], filename)
                 except UnicodeDecodeError, e:
@@ -253,7 +253,7 @@ class Core(CorePluginBase):
         # Enable the looping call
         if watchdir_id not in self.update_timers or not self.update_timers[watchdir_id].running:
             self.update_timers[watchdir_id] = LoopingCall(self.update_watchdir, watchdir_id)
-            self.update_timers[watchdir_id].start(5).addErrback(self.on_update_watchdir_error, watchdir_id)
+            self.update_timers[watchdir_id].start(20).addErrback(self.on_update_watchdir_error, watchdir_id)
         # Update the config
         if not self.watchdirs[watchdir_id]['enabled']:
             self.watchdirs[watchdir_id]['enabled'] = True
